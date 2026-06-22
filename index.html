@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafío: Luz Roja</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #b3b3b3;
+            margin-bottom: 20px;
+        }
+
+        /* Contenedor de la palabra interactiva */
+        .pantalla-letras {
+            background-color: white;
+            padding: 30px 50px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            font-size: 3.5rem;
+            font-weight: bold;
+            letter-spacing: 5px;
+            transition: background-color 0.5s ease;
+            min-width: 280px;
+        }
+
+        /* Estilos base para las letras */
+        .letra {
+            transition: all 0.5s ease;
+            display: inline-block;
+        }
+
+        /* Colores iniciales simulando tu imagen */
+        .rojo { color: #ff2a2a; order: unset; }
+        .verde { color: #00aa33; }
+        .azul { color: #0088cc; }
+        .amarillo { color: #ddaa00; }
+
+        /* Efecto cuando se ENCIENDE la luz roja */
+        body.luz-roja-activa .pantalla-letras {
+            background-color: #ff0000; /* Fondo se vuelve rojo puro */
+        }
+
+        body.luz-roja-activa .rojo {
+            color: #ff0000; /* El texto rojo se mimetiza con el fondo y desaparece */
+            opacity: 0;
+            width: 0;
+            margin: 0;
+            letter-spacing: 0;
+            pointer-events: none;
+        }
+
+        body.luz-roja-activa .verde, 
+        body.luz-roja-activa .azul, 
+        body.luz-roja-activa .amarillo {
+            color: #000000; /* El resto de letras se vuelven negras por el contraste */
+        }
+
+        /* Reordenamiento para formar CEFALEA automáticamente */
+        body.luz-roja-activa .l-c { order: 1; }
+        body.luz-roja-activa .l-e1 { order: 2; }
+        body.luz-roja-activa .l-f { order: 3; }
+        body.luz-roja-activa .l-a1 { order: 4; }
+        body.luz-roja-activa .l-l { order: 5; }
+        body.luz-roja-activa .l-e2 { order: 6; }
+        body.luz-roja-activa .l-a2 { order: 7; }
+
+        /* Controles */
+        .controles {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-luz {
+            background-color: #ff2a2a;
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 42, 42, 0.4);
+        }
+
+        body.luz-roja-activa .btn-luz {
+            background-color: #333;
+            content: "Apagar Luz";
+        }
+
+        .seccion-input {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            padding: 12px;
+            border-radius: 25px;
+            border: 2px solid #333;
+            background-color: #222;
+            color: white;
+            text-align: center;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .btn-verificar {
+            background-color: #1DB954;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Decodificador de Frecuencia</h2>
+
+    <div class="pantalla-letras" id="pantalla">
+        <span class="letra rojo">Q</span>
+        <span class="letra verde l-c">C</span>
+        <span class="letra amarillo l-e1">e</span>
+        <span class="letra rojo">X</span>
+        <span class="letra azul l-f">f</span>
+        <span class="letra verde l-a1">a</span>
+        <span class="letra rojo">J</span>
+        <span class="letra amarillo l-l">l</span>
+        <span class="letra azul l-e2">e</span>
+        <span class="letra rojo">8</span>
+        <span class="text verde l-a2">a</span>
+    </div>
+
+    <div class="controles">
+        <button class="btn-luz" id="btnLuz" onclick="alternarLuz()">Encender Luz Roja</button>
+
+        <div class="seccion-input">
+            <input type="text" id="campoClave" placeholder="Introduce la palabra clave...">
+            <button class="btn-verificar" onclick="procesarClave()">Validar</button>
+        </div>
+    </div>
+
+    <script>
+        function alternarLuz() {
+            const body = document.body;
+            const boton = document.getElementById('btnLuz');
+            
+            body.classList.toggle('luz-roja-activa');
+            
+            if (body.classList.contains('luz-roja-activa')) {
+                boton.innerText = "Apagar Luz Roja";
+            } else {
+                boton.innerText = "Encender Luz Roja";
+            }
+        }
+
+        function procesarClave() {
+            const entrada = document.getElementById('campoClave').value.trim().toLowerCase();
+            const destino = "https://open.spotify.com/playlist/1S5TNQZ9nrECFqFc7SKsgr?si=BvLRPiXKSAGtctNM4J-qcg&pt=2defda54fe35a21b49ff4303ea0bb782";
+
+            if (entrada === 'cefalea') {
+                alert("¡Frecuencia sintonizada con éxito! Abriendo Spotify...");
+                window.location.href = destino;
+            } else {
+                alert("Código erróneo. La señal sigue distorsionada.");
+            }
+        }
+    </script>
+</body>
+</html>
